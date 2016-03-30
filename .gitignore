@@ -1,0 +1,10 @@
+# Ignore build and bin folders
+/build
+/bin
+
+# Ignore Eclipse project info files
+.project
+.cproject
+
+# Ignore vi files
+*.swp
