@@ -21,23 +21,15 @@ class LibraryCatalogApp
 public:
 	LibraryCatalogApp();
 
-	/*
-	 * TODO write comment
-	 */
 	void start();
 
-	/*
-	 * TODO Write comment
-	 */
+	void checkOut();
+
 	Patron& createPatronRecord(std::string patronID, std::string patronName);
 
-	/*
-	 * TODO write comment
-	 */
 	Book& addBook(); // TODO supply parameters
 
 private:
-	void checkOut();
 	void readPatronDatabase();
 	void readBookDatabase();
 

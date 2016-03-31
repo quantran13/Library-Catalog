@@ -76,7 +76,7 @@ vector<Patron> PatronDatabase::searchPatronByName(const string& patronName) cons
 
 Patron& PatronDatabase::getPatronByID(const string& patronID)
 {
-	if (mPatrons.find(patronID) == mPatrons.end())
+	if (mPatrons.find(patronID) != mPatrons.end())
 		throw runtime_error("Patron not found!");
 	else
 		return mPatrons[patronID];

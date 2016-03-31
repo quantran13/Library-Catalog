@@ -12,11 +12,15 @@ using namespace utility;
 
 namespace LibraryCatalog {
 
+//==============================================================================
+// Constructors & App starting function
+//==============================================================================
 LibraryCatalogApp::LibraryCatalogApp()
 {
 	// TODO constructor
 	mPatronDatabase.addPatron("D00000000", "Admin");
 }
+
 
 void LibraryCatalogApp::start()
 {
@@ -25,7 +29,33 @@ void LibraryCatalogApp::start()
 	// TODO Try creating patron + read patron db
 	Patron quan = mPatronDatabase.getPatronByID("D01711540");
 	cout << quan << endl;
+
+	// Main part
+	fmt::print("Welcome to the Denison University's Library Catalog!\n");
+	fmt::print("------------------------------------------------------\n");
+
+	while (true) {
+		int options = 4;
+
+		fmt::print("1. Check out a book.\n");
+		fmt::print("2. Check in a book.\n");
+		fmt::print("3. Reserve a book.\n");
+		fmt::print("\n4. Login to administration interface.\n");
+
+		int userOption = 0;
+		while (userOption <= 0 || userOption > options) {
+			cin >> userOption;
+		}
+
+		fmt::print("{}\n", userOption);
+		break;
+	}
 }
+
+
+//==============================================================================
+// Create patron record
+//==============================================================================
 
 Patron& LibraryCatalogApp::createPatronRecord(string patronID, string patronName)
 {
@@ -47,13 +77,20 @@ Patron& LibraryCatalogApp::createPatronRecord(string patronID, string patronName
 	return mPatronDatabase.getPatronByID(patronID);
 }
 
+
+//==============================================================================
+// Check out a book
+//==============================================================================
+
 void LibraryCatalogApp::checkOut() 
 {
 	// TODO Checkout a book
+	
 }
 
+
 //==============================================================================
-// Functions for reading databases
+// Read in the database file
 //==============================================================================
 
 void LibraryCatalogApp::readPatronDatabase() 
