@@ -13,6 +13,7 @@
 #include <vector>
 #include <utility.h>
 #include <Patron.h>
+#include <exceptions/InvalidPatronID.h>
 
 namespace LibraryCatalog {
 

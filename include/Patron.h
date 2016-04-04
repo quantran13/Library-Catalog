@@ -11,6 +11,7 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
+#include <exceptions/InvalidPatronID.h>
 #include <utility.h>
 
 namespace LibraryCatalog {

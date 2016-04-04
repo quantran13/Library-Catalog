@@ -6,11 +6,13 @@
 //==============================================================================
 
 #include <fstream>
+#include <iostream>
 #include <stdexcept>
 #include <Book.h>
 #include <BookDatabase.h>
 #include <Patron.h>
 #include <PatronDatabase.h>
+#include <exceptions/NotImplementedException.h>
 #include <utility.h>
 #include <format.h>
 
@@ -21,13 +23,29 @@ class LibraryCatalogApp
 public:
 	LibraryCatalogApp();
 
+	/*
+	 * Method: start
+	 * Usage: start()
+	 * -------------------------------------------------------------------------
+	 * Reads the databases and opens up the user interface, waiting for user 
+	 * input.
+	 */
 	void start();
 
-	void checkOut();
+	/*
+	 * Method: checkOut
+	 * Usage: checkOut(patronID, bookISBN)
+	 * -------------------------------------------------------------------------
+	 * Checks out a book for a specified patron.
+	 * Throws a invalid patronID exception if the given patron ID is invalid.
+	 */
+	void checkOut(std::string patronID, std::string bookISBN);
 
 	Patron& createPatronRecord(std::string patronID, std::string patronName);
 
-	Book& addBook(); // TODO supply parameters
+	Book& addBook(std::string bookISBN, std::string bookName,
+	              std::string authorFirstName, std::string authorLastName,
+				  std::string publisher, int yearOfPublication, Subject subject); 
 
 private:
 	void readPatronDatabase();

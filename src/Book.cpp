@@ -48,12 +48,12 @@ Book::Book(const string bookName, const string ISBN,
 }
 
 Book::~Book() {
-	// TODO Auto-generated destructor stub
+	// Nothing to clean up.
 }
 
-/*
- * Getters & Setters for Book's properties.
- */
+//==============================================================================
+// Getters & Setters for Book's properties.
+//==============================================================================
 
 void Book::setBookName(const string bookName)
 {
@@ -154,30 +154,23 @@ BookStatus Book::getBookStatus() const
 // Book status changing functions
 //==============================================================================
 
-string Book::checkOut(Patron patron)
+void Book::checkOut(const Patron& patron)
 {
-	string message = "";
-
 	if (getBookStatus() == BookStatus::CheckedOut) {
-		message += "The book is checked out to ";
-		message += mBookPatron.getPatronName() + " - ";
-		message += mBookPatron.getPatronID() + ".\n";
+		string message = "The book is already checked out!";
+		throw runtime_error(message);
 	} else if (getBookStatus() == BookStatus::Reserved) {
 		if (patron.getPatronID() == mBookPatron.getPatronID()) {
 			setBookStatus(BookStatus::CheckedOut);
-			message += "Check out successfully!";
+			mBookPatron = patron;
 		} else {
-			message += "The book is reserved to ";
-			message += mBookPatron.getPatronName() + " - ";
-			message += mBookPatron.getPatronID() += ".\n";
+			string message = "The book is reserved!";
+			throw runtime_error(message);
 		}
 	} else {
 		mBookPatron = patron;
 		setBookStatus(BookStatus::CheckedOut);
-		message = "Check out successfully!";
 	}
-
-	return message;
 }
 
 bool Book::checkIn()
@@ -192,42 +185,32 @@ bool Book::checkIn()
 	return false;
 }
 
-string Book::reserve(Patron patron)
+void Book::reserve(const Patron& patron)
 {
-	string message = "";
-
 	if (getBookStatus() == BookStatus::Reserved) {
-		message += "The book is already reserved to ";
-		message += mBookPatron.getPatronName() + ".\n";
+		string message = "The book is already reserved!";
+		throw runtime_error(message);
 	} else if (getBookStatus() == BookStatus::CheckedOut) {
-		message += "The book is checked out to ";
-		message += mBookPatron.getPatronName() + ".\n";
+		string message = "The book is checked out!";
+		throw runtime_error(message);
 	} else {
 		mBookPatron = patron;
 		mBookStatus = BookStatus::Reserved;
-		message += "Reserved successfully!";
 	}
-
-	return message;
 }
 
-string Book::cancelReserve(Patron patron)
+void Book::cancelReserve(const Patron& patron)
 {
-	string message = "";
-
 	if (getBookStatus() == BookStatus::Reserved) {
 		if (patron.getPatronID() == mBookPatron.getPatronID()) {
 			setBookStatus(BookStatus::Available);
-			message = "Reservation cancelled successfully!";
 		} else {
-			message = "You must be the person who reserved the book";
-			message += " to cancel reservation.";
+			throw runtime_error("You cannot cancel the reservation on this book!");
 		}
 	} else {
-		message = "No reservation at the moment to cancelled.";
+		string message = "No reservation at the moment to be cancelled.";
+		throw runtime_error(message);
 	}
-
-	return message;
 }
 
 //==============================================================================

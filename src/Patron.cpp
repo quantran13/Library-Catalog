@@ -18,7 +18,7 @@ Patron::Patron()
 Patron::Patron(const string& patronID, const string& patronName)
 {
 	if (!utility::isValidPatronID(patronID))
-		throw runtime_error("Invalid patron ID!");
+		throw InvalidPatronID();
 	
 	if (patronName == "")
 		throw runtime_error("Patron's name must not be empty!");

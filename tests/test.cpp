@@ -99,8 +99,11 @@ int main()
 	*/
 
 	LibraryCatalogApp myApp;
-	myApp.start();
 	myApp.createPatronRecord("D01711540", "Quan Tran");
+	myApp.createPatronRecord("D01234567", "No one");
+	myApp.addBook("1234567890", "Introduction to Algorithms", "", "", "", 2009, 
+	              Subject::NaturalScience);
+	myApp.start();
 
 	return 0;
 }

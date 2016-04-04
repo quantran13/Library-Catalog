@@ -25,7 +25,7 @@ Patron& PatronDatabase::addPatron(const string& patronID, const string& patronNa
 	} else {
 		// Make sure the ID's format is right
 		if (!isValidPatronID(patronID))
-			throw runtime_error("Wrong Patron ID format!");
+			throw InvalidPatronID();
 
 		// Make sure the name is not empty
 		if (patronName.length() == 0)
@@ -52,7 +52,7 @@ Patron& PatronDatabase::addPatron(const Patron& patron)
 
 		// Make sure the ID's format is right
 		if (!isValidPatronID(patronID))
-			throw runtime_error("Wrong Patron ID format!");
+			throw InvalidPatronID();
 
 		// Make sure the name is not empty
 		if (patronName.length() == 0)
@@ -76,8 +76,9 @@ vector<Patron> PatronDatabase::searchPatronByName(const string& patronName) cons
 
 Patron& PatronDatabase::getPatronByID(const string& patronID)
 {
-	if (mPatrons.find(patronID) != mPatrons.end())
+	if (mPatrons.count(patronID) == 0) {
 		throw runtime_error("Patron not found!");
+	}
 	else
 		return mPatrons[patronID];
 }

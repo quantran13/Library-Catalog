@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <string>
+#include <stdexcept>
 #include <Constants.h>
 #include <Patron.h>
 
@@ -21,7 +22,7 @@ public:
 	Book(const std::string bookName, const std::string ISBN,
 			const std::string authorFirstName, const std::string authorLastName,
 			const std::string publisher, int yearOfPublication, Subject subject);
-	virtual ~Book();
+	~Book();
 
 	//==========================================================================
 	// Getters & Setters
@@ -62,7 +63,7 @@ public:
 	 * Try checking out if book is available and return
 	 * whether book has been checked out successfully or not.
 	 */
-	std::string checkOut(Patron patron);
+	void checkOut(const Patron& patron);
 
 	/*
 	 * Method: checkIn
@@ -80,7 +81,7 @@ public:
 	 * Reserve the book and return whether the book is reserved successfully
 	 * or not.
 	 */
-	std::string reserve(Patron patron);
+	void reserve(const Patron& patron);
 
 	/*
 	 * Method: cancelReserve
@@ -88,7 +89,7 @@ public:
 	 * -------------------------------------------------------------------------
 	 * Cancel the book's reservation and return a message.
 	 */
-	std::string cancelReserve(Patron patron);
+	void cancelReserve(const Patron& patron);
 
 	/* Method: display
 	 * Usage: display()

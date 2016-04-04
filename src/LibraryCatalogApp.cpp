@@ -32,23 +32,72 @@ void LibraryCatalogApp::start()
 
 	// Main part
 	fmt::print("Welcome to the Denison University's Library Catalog!\n");
-	fmt::print("------------------------------------------------------\n");
 
 	while (true) {
-		int options = 4;
+		int options = 7;
 
+		fmt::print("\n------------------------------------------------------\n");
 		fmt::print("1. Check out a book.\n");
 		fmt::print("2. Check in a book.\n");
 		fmt::print("3. Reserve a book.\n");
-		fmt::print("\n4. Login to administration interface.\n");
+		fmt::print("\n4. Create a new Patron record.\n");
+		fmt::print("\n5. Delete a patron from the database.\n");
+		fmt::print("\n6. Add a book to the database.\n");
+		fmt::print("\n7. Quit.\n");
 
+		fmt::print("\n");
 		int userOption = 0;
 		while (userOption <= 0 || userOption > options) {
 			cin >> userOption;
 		}
 
-		fmt::print("{}\n", userOption);
-		break;
+		switch (userOption) {
+		case 1:
+		{
+			/* Check out a book */
+
+			// Read the patron ID.
+			string patronID;
+			cout << "Input your patron ID: ";
+			cin >> patronID;
+
+			// Read the book's ISBN number.
+			string bookISBN;
+			cout << "Input your book ISBN: ";
+			cin >> bookISBN;
+
+			try {
+				checkOut(patronID, bookISBN);
+			} catch (InvalidPatronID& e) {
+				cout << e.what() << endl;
+			} catch (runtime_error& e) {
+				cout << e.what() << endl;
+			}
+			
+			break;
+		}
+		case 2:
+			throw NotImplementedException();
+			break;
+		case 3:
+			throw NotImplementedException();
+			break;
+		case 4:
+			throw NotImplementedException();
+			break;
+		case 5:
+			throw NotImplementedException();
+			break;
+		case 6:
+			throw NotImplementedException();
+			break;
+		case 7:
+		default:
+			cout << "7" << endl;
+		}
+
+		if (userOption == options) // If the option is the last one then quits.
+			break;
 	}
 }
 
@@ -71,8 +120,14 @@ Patron& LibraryCatalogApp::createPatronRecord(string patronID, string patronName
 	else
 		throw runtime_error("Could not open patrons database file!");
 
-	mPatronDatabase.addPatron(patronID, patronName);
+	// Add patron to the database
 	patronDatabaseFile.close();
+
+	try {
+		mPatronDatabase.addPatron(patronID, patronName);
+	} catch (runtime_error& e) {
+		throw runtime_error(e.what());
+	}
 
 	return mPatronDatabase.getPatronByID(patronID);
 }
@@ -82,12 +137,57 @@ Patron& LibraryCatalogApp::createPatronRecord(string patronID, string patronName
 // Check out a book
 //==============================================================================
 
-void LibraryCatalogApp::checkOut() 
+void LibraryCatalogApp::checkOut(string patronID, string bookISBN) 
 {
-	// TODO Checkout a book
+	Patron patronFound;
+	if (!isValidPatronID(patronID))
+		throw InvalidPatronID(patronID);
+	else
+		patronFound = mPatronDatabase.getPatronByID(patronID);
 	
+	Book bookFound;
+	try {
+		bookFound = mBookDatabase.getBookByISBN(bookISBN);
+	} catch (runtime_error& e) {
+		throw runtime_error(e.what());
+	}
+
+	if (bookFound.getBookStatus() == BookStatus::Available)
+		cout << "Available\n";
+	else
+		cout << "Not available\n";
+
+	try {
+		bookFound.checkOut(patronFound);
+	} catch (runtime_error& e) {
+		throw runtime_error(e.what());
+	}
 }
 
+
+//==============================================================================
+// Add a book to the database
+//==============================================================================
+
+Book& LibraryCatalogApp::addBook(string bookISBN, string bookName,
+                                 string authorFirstName, string authorLastName,
+								 string publisher, int yearOfPublication,
+								 Subject subject)
+{
+	Book newBook(bookName, bookISBN, authorFirstName, authorLastName, publisher,
+	             yearOfPublication, subject);
+
+	// TODO Write book info to database file
+	
+	// Add book the the database
+	try {
+		mBookDatabase.addBook(newBook);
+	} catch (runtime_error& e) {
+		throw runtime_error(e.what());
+	}
+
+	return mBookDatabase.getBookByISBN(bookISBN);
+}
 
 //==============================================================================
 // Read in the database file
